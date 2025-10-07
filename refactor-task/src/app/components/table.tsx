@@ -140,10 +140,13 @@ const Table = ({ issues }: TableProps) => {
         {issues.map(({ id, name, message, status }, index) => {
           const issueIsOpen = status === "open";
           const onClick = issueIsOpen ? () => handleOnChange(id) : undefined;
+
+          const isChecked = checkedState[id]?.checked ?? false;
+
           const rowClasses = `${issueIsOpen
             ? "cursor-pointer hover:bg-blue-50 text-black"
             : "text-gray-600 cursor-not-allowed"
-            } border-b border-gray-200 ${checkedState[index].checked ? "bg-blue-50" : ""}`;
+            } border-b border-gray-200 ${isChecked ? "bg-blue-50" : ""}`;
 
           return (
             <tr className={rowClasses} key={id} onClick={onClick}>
@@ -155,8 +158,9 @@ const Table = ({ issues }: TableProps) => {
                     id={`custom-checkbox-${index}`}
                     name={name}
                     value={name}
-                    checked={checkedState[index].checked}
-                    onChange={() => handleOnChange(index)}
+                    checked={isChecked}
+                    onChange={() => handleOnChange(id)}
+
                   />
                 ) : (
                   <input className="w-5 h-5 opacity-50" type="checkbox" disabled />
